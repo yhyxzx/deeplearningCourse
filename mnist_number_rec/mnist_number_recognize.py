@@ -68,9 +68,9 @@ class Net(nn.Module):
         x = F.dropout(x, training=self.training)
         x = self.fc2(x)
         return x
+device=torch.device("cuda" if torch.cuda.is_available() else "cpu" )
 
-network = Net()
-model = network.cuda()
+model = Net().to(device)
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 train_losses = []
@@ -109,11 +109,11 @@ def test():
             data = data.cuda()
             target = target.cuda()
             output = model(data)
-            test_loss += loss_func(output, target).item()
+            test_loss = loss_func(output, target).item()
             pred = output.data.max(1, keepdim=True)[1]
             correct += pred.eq(target.data.view_as(pred)).sum()
     # print(len(test_loader.dataset))
-    test_loss /= len(test_loader.dataset)
+    # test_loss /= len(test_loader.dataset)
     test_losses.append(test_loss)
     print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
     test_loss, correct, len(test_loader.dataset),
