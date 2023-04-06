@@ -68,6 +68,7 @@ class Net(nn.Module):
         x = F.dropout(x, training=self.training)
         x = self.fc2(x)
         return x
+
 device=torch.device("cuda" if torch.cuda.is_available() else "cpu" )
 
 model = Net().to(device)
@@ -84,8 +85,7 @@ def train(epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         optimizer.zero_grad()
-        data = data.cuda()
-        target = target.cuda()
+        data, target = data.to(device), target.to(device)
         output = model(data)
         loss = loss_func(output, target)
         loss.backward()
@@ -106,8 +106,7 @@ def test():
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
-            data = data.cuda()
-            target = target.cuda()
+            data, target = data.to(device), target.to(device)
             output = model(data)
             test_loss = loss_func(output, target).item()
             pred = output.data.max(1, keepdim=True)[1]
