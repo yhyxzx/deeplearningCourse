@@ -3,7 +3,7 @@ from basic_block import BasicBlock
 
 
 
-class AngleRegressionNet(nn.Module):
+class ResNet(nn.Module):
 
     def __init__(self) -> None:
         super().__init__()

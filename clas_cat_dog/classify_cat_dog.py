@@ -1,6 +1,7 @@
 import os,shutil
 import matplotlib.pyplot as plt
 import numpy as np
+from torch.optim.lr_scheduler import StepLR
 from torchvision import transforms,datasets
 import random
 import torch
@@ -8,7 +9,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils import data
-from angle_regression_net import AngleRegressionNet
+from res_classification_net import ResNet
 
 def mymovefile(srcfile,dstfile):
     if not os.path.isfile(srcfile):
@@ -49,7 +50,6 @@ transforms = transforms.Compose(
 [
 
 transforms.RandomResizedCrop(150),
-transforms.ColorJitter(brightness=0.5, contrast=0.5, hue=0.5),
 transforms.ToTensor(),
 transforms.Normalize(mean=[0.485, 0.456, 0.406],
                             std=[0.229, 0.224, 0.225])
@@ -94,9 +94,9 @@ test_loader = data.DataLoader(test_data,batch_size=100)
 #         return x
 
 
-lr=1e-4
+lr=1e-3
 device=torch.device("cuda" if torch.cuda.is_available() else "cpu" )
-model=AngleRegressionNet().to(device)
+model=ResNet().to(device)
 optimizer=optim.Adam(model.parameters(),lr=lr)
 loss_func = nn.CrossEntropyLoss()
 
@@ -135,7 +135,7 @@ def test(model,device,test_loader):
     print("accuracy:{}".format(acc))
 
 
-num_epochs=20
+num_epochs=10
 train_losses = []
 train_counter = []
 test_losses = []
