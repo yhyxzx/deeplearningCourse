@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 #%%
 n_epochs = 5
 batch_size_train = 64
-batch_size_test = 1000
+batch_size_test = 10000
 learning_rate = 0.001
 # momentum = 0.5
 log_interval = 10
@@ -127,8 +127,8 @@ fig = plt.figure()
 plt.plot(train_counter, train_losses, color='blue')
 plt.scatter(test_counter, test_losses, color='red')
 plt.legend(['Train Loss', 'Test Loss'], loc='upper right')
-plt.xlabel('number of training examples seen')
-plt.ylabel('negative log likelihood loss')
+plt.xlabel('iteration')
+plt.ylabel('loss')
 plt.show()
 
 examples = enumerate(test_loader)
