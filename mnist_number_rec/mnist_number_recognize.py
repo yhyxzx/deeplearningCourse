@@ -99,6 +99,9 @@ def train(epoch):
                 (batch_idx * 64) + (epoch * len(train_loader.dataset)))
             # torch.save(network.state_dict(), './model.pth')
             # torch.save(optimizer.state_dict(), './optimizer.pth')
+            # 保存权重文件
+            if epoch % 1 == 0:
+                torch.save(model.state_dict(), f'./model_epoch{epoch}.pth')
 
 def test():
     model.eval()
@@ -117,7 +120,7 @@ def test():
     print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
     test_loss, correct, len(test_loader.dataset),
     100. * correct / len(test_loader.dataset)))
-
+# model.load_state_dict(torch.load('./model_epoch4.pth'))
 test()
 for epoch in range(n_epochs):
     train(epoch)
